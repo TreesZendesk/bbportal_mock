@@ -1,4 +1,4 @@
-ubah lagi after wrong key aateslagi
+ubah lagi after wrong key aateslagi lagi lagi
 {
 	"uuid": "90821930201938fbca923a"
 	"NIK": "123abc",
@@ -8,7 +8,7 @@ ubah lagi after wrong key aateslagi
 	"sub-jenis_komplain": "Ugal ugalan",
 	"isi_komplain": "tadi begitu saya",
 	"hasil_proses": "pending",
-	"penyelesaian_tamu": "", 
+	"penyelesaian_tamu": "",
 	"sanksi": "",
 	"kesimpulan": "ya begitulah adanya"
 }
@@ -40,7 +40,7 @@ var tickets = {
 		    "name": "Norman"
 			},
 		  "body": "Ini Kesimpulan: bal bla bla2"
-		}	
+		}
 	],
 	"custom_fields": {
 	  	"zd_custom_fields": {
@@ -61,7 +61,6 @@ for comment in comments {
 		ticket.updateColumn('isi_komplain', body);
 	} else if (comment_has_text("penyelesaian", comment)) {
 		ticket.updateColumn('penyelesaian', body)
-	} 
+	}
 
 }
-
