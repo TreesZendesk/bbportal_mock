@@ -12,6 +12,7 @@
 @section('footer')
 	<script src="//cdn.datatables.net/v/bs/dt-{{ Kordy\Ticketit\Helpers\Cdn::DataTables }}/r-{{ Kordy\Ticketit\Helpers\Cdn::DataTablesResponsive }}/datatables.min.js"></script>
 	<script>
+      console.log('{!! route($setting->grab('main_route').'.data', $complete) !!}');
 	    $('.table').DataTable({
 	        processing: false,
 	        serverSide: true,
@@ -51,7 +52,8 @@
             	{ data: 'agent', name: 'users.name' },
 	            @if( $u->isAgent() || $u->isAdmin() )
 		            { data: 'priority', name: 'ticketit_priorities.name' },
-	            	{ data: 'owner', name: 'users.name' },
+	            	// { data: 'owner', name: 'users.name' },
+                { data: 'requester_email', name: 'ticketit_priorities.name' },
 		            { data: 'category', name: 'ticketit_categories.name' }
 	            @endif
 	        ]

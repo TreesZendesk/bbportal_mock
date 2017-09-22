@@ -146,7 +146,8 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
             ],
         ]);
 
-        //Tickets demo data route (ex. http://url/tickets-admin/demo-seeds/)
+        // Tickets demo data route (ex. http://url/tickets-admin/demo-seeds/)
+        Route::get('data','Kordy\Ticketit\Controllers\TicketsController@data');
         // Route::get("$admin_route/demo-seeds", 'Kordy\Ticketit\Controllers\InstallController@demoDataSeeder');
     });
 });

@@ -15,6 +15,9 @@ class Ticket extends Model
     protected $table = 'ticketit';
     protected $dates = ['completed_at'];
 
+    protected $fieldsToBeComment = ['content', 'hasil_proses', 'penyelesaian_tamu', 'sanksi', 'kesimpulan'];
+    protected $fieldsToBeCustomField = ['NIK', 'pengemudi', 'nomer_mobil', 'category_id'];
+
     /**
      * List of completed tickets.
      *
@@ -173,6 +176,11 @@ class Ticket extends Model
         return $query->where('agent_id', $id);
     }
 
+    public function scopeAllTickets($query, $id)
+    {
+        return $query;
+    }
+
     /**
      * Get all agent tickets.
      *
@@ -221,4 +229,61 @@ class Ticket extends Model
 
         return $this;
     }
+
+    /**
+     * return Array
+     */
+    public function getCategorizedChangedFields()
+    {
+      $fields = [];
+      $fields['comments'] = [];
+      $fields['customFields'] = [];
+      foreach ($this->getDirty() as $key => $value) {
+        if (in_array($key, ['content', 'hasil_proses', 'penyelesaian_tamu', 'sanksi', 'kesimpulan'])) {
+
+            switch ($key) {
+              case 'content':
+                $key = 'Isi Komplain';
+                break;
+              case 'hasil_proses':
+                $key = "Hasil Proses";
+                break;
+              case 'penyelesaian_tamu':
+                $key = "Penyelesaian Tamu";
+                break;
+              case 'sanksi':
+                $key = "Sanksi";
+                break;
+              case 'kesimpulan':
+                $key = "Kesimpulan";
+                break;
+            }
+
+          $fields['comments'][] = $key;
+        } else if (in_array($key, ['NIK', 'pengemudi', 'nomer_mobil', 'category_id'])) {
+
+          switch ($key) {
+            case 'NIK':
+              $key = 'NIK';
+              break;
+            case 'pengemudi':
+              $key = "Pengemudi";
+              break;
+            case 'nomer_mobil':
+              $key = "Nomer Mobil";
+              break;
+            case 'category_id':
+              $key = "Jenis Komplain";
+              break;
+          }
+
+          $fields['customFields'][] = $key;
+        }
+      }
+
+      return $fields;
+    }
+
+
+
 }

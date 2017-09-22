@@ -1,5 +1,4 @@
 <?php
-
 namespace Kordy\Ticketit\Models;
 
 use Cache;
@@ -46,7 +45,7 @@ class Setting extends Model
          * of Database queries. Only for adding new settings while
          * in development and testing.
          */
- //       Cache::flush();
+        // Cache::flush();
 
         $setting = Cache::remember('ticketit::settings.'.$slug, 60, function () use ($slug) {
             $settings = Cache::remember('ticketit::settings', 60, function () {
@@ -54,7 +53,6 @@ class Setting extends Model
             });
 
             $setting = $settings->where('slug', $slug)->first();
-
             if ($setting->lang) {
                 return trans($setting->lang);
             }

@@ -38,7 +38,6 @@ class TicketsController extends Controller
         }
 
         $user = $this->agent->find(auth()->user()->id);
-
         if ($user->isAdmin()) {
             if ($complete) {
                 $collection = Ticket::complete();
@@ -67,6 +66,7 @@ class TicketsController extends Controller
             ->select([
                 'ticketit.id',
                 'ticketit.subject AS subject',
+                'ticketit.requester_email',
                 'ticketit_statuses.name AS status',
                 'ticketit_statuses.color AS color_status',
                 'ticketit_priorities.color AS color_priority',
@@ -78,7 +78,6 @@ class TicketsController extends Controller
                 'ticketit.agent_id',
                 'ticketit_categories.name AS category',
             ]);
-
         $collection = $datatables->of($collection);
 
         $this->renderTicketTable($collection);
@@ -90,7 +89,6 @@ class TicketsController extends Controller
         if (LaravelVersion::min('5.4')) {
             $collection->rawColumns(['subject', 'status', 'priority', 'category', 'agent']);
         }
-
         return $collection->make(true);
     }
 
@@ -207,6 +205,8 @@ class TicketsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'requester_name' => 'required|min:3',
+            'requester_email' => 'nullable|email',
             'subject'     => 'required|min:3',
             'content'     => 'required|min:6',
             'priority_id' => 'required|exists:ticketit_priorities,id',
@@ -214,6 +214,9 @@ class TicketsController extends Controller
         ]);
 
         $ticket = new Ticket();
+
+        $ticket->requester_name = $request->requester_name;
+        $ticket->requester_email = $request->requester_email ?: null;
 
         $ticket->subject = $request->subject;
 
@@ -274,23 +277,31 @@ class TicketsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'subject'     => 'required|min:3',
-            'content'     => 'required|min:6',
+            // 'subject'     => 'required|min:3',
+            // 'content'     => 'required|min:6',
             'priority_id' => 'required|exists:ticketit_priorities,id',
             'category_id' => 'required|exists:ticketit_categories,id',
             'status_id'   => 'required|exists:ticketit_statuses,id',
             'agent_id'    => 'required',
         ]);
-
         $ticket = $this->tickets->findOrFail($id);
 
-        $ticket->subject = $request->subject;
+        $ticket->subject = $request->get('subject') ?: $ticket->subject;
 
-        $ticket->setPurifiedContent($request->get('content'));
+        $ticket->setPurifiedContent($request->get('content') ?: $ticket->content);
 
         $ticket->status_id = $request->status_id;
         $ticket->category_id = $request->category_id;
         $ticket->priority_id = $request->priority_id;
+
+        //custom fields
+        $ticket->NIK = $request->NIK;
+        $ticket->pengemudi = $request->pengemudi;
+        $ticket->nomer_mobil = $request->nomer_mobil;
+        $ticket->penyelesaian_tamu = $request->penyelesaian_tamu;
+        $ticket->hasil_proses = $request->hasil_proses;
+        $ticket->sanksi = $request->sanksi;
+        $ticket->kesimpulan = $request->kesimpulan;
 
         if ($request->input('agent_id') == 'auto') {
             $ticket->autoSelectAgent();
@@ -298,9 +309,11 @@ class TicketsController extends Controller
             $ticket->agent_id = $request->input('agent_id');
         }
 
+        $changed_fields = $ticket->getCategorizedChangedFields();
         $ticket->save();
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-modified'));
+        session()->flash('changed_fields', $changed_fields);
 
         return redirect()->route(Setting::grab('main_route').'.show', $id);
     }
@@ -523,4 +536,6 @@ class TicketsController extends Controller
 
         return $performance_average;
     }
+
+
 }

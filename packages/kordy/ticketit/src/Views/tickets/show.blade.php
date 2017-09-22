@@ -4,10 +4,10 @@
         @include('ticketit::shared.header')
         @include('ticketit::tickets.partials.ticket_body')
         <br>
-        <h2>{{ trans('ticketit::lang.comments') }}</h2>
+        {{-- <h2>{{ trans('ticketit::lang.comments') }}</h2>
         @include('ticketit::tickets.partials.comments')
         {!! $comments->render() !!}
-        @include('ticketit::tickets.partials.comment_form')
+        @include('ticketit::tickets.partials.comment_form') --}}
 @endsection
 
 @section('footer')

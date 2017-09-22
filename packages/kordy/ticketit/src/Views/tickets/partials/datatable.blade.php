@@ -8,7 +8,8 @@
             <td>{{ trans('ticketit::lang.table-agent') }}</td>
           @if( $u->isAgent() || $u->isAdmin() )
             <td>{{ trans('ticketit::lang.table-priority') }}</td>
-            <td>{{ trans('ticketit::lang.table-owner') }}</td>
+            {{-- <td>{{ trans('ticketit::lang.table-owner') }}</td> --}}
+            <td>{{ trans('ticketit::lang.table-requester_email') }}</td>
             <td>{{ trans('ticketit::lang.table-category') }}</td>
           @endif
         </tr>

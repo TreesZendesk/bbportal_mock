@@ -11,6 +11,21 @@
                         ]) !!}
             <legend>{!! trans('ticketit::lang.create-new-ticket') !!}</legend>
             <div class="form-group">
+                {!! CollectiveForm::label('requester_name', "Name" . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+                <div class="col-lg-10">
+                    {!! CollectiveForm::text('requester_name', null, ['class' => 'form-control']) !!}
+                    {{-- <span class="help-block">{!! trans('ticketit::lang.create-ticket-brief-issue') !!}</span> --}}
+                </div>
+            </div>
+            <div class="form-group">
+                {!! CollectiveForm::label('requester_email', "Email" . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+                <div class="col-lg-10">
+                    {!! CollectiveForm::email('requester_email', null, ['class' => 'form-control']) !!}
+                    {{-- <span class="help-block">{!! trans('ticketit::lang.create-ticket-brief-issue') !!}</span> --}}
+                </div>
+            </div>
+            <div class="form-group">
+              <hr/>
                 {!! CollectiveForm::label('subject', trans('ticketit::lang.subject') . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
                 <div class="col-lg-10">
                     {!! CollectiveForm::text('subject', null, ['class' => 'form-control', 'required' => 'required']) !!}
@@ -39,6 +54,7 @@
                 </div>
                 {!! CollectiveForm::hidden('agent_id', 'auto') !!}
             </div>
+
             <br>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">

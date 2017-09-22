@@ -75,7 +75,6 @@ class TicketitServiceProvider extends ServiceProvider
                 $include_font_awesome = Setting::grab('include_font_awesome');
                 $view->with(compact('include_font_awesome'));
             });
-
             view()->composer('ticketit::tickets.partials.summernote', function ($view) {
                 $editor_locale = Setting::grab('summernote_locale');
 
@@ -197,6 +196,7 @@ class TicketitServiceProvider extends ServiceProvider
             $admin_route = Setting::grab('admin_route');
             $admin_route_path = Setting::grab('admin_route_path');
             include Setting::grab('routes');
+
         } elseif (Request::path() == 'tickets-install'
                 || Request::path() == 'tickets-upgrade'
                 || Request::path() == 'tickets'
@@ -230,6 +230,7 @@ class TicketitServiceProvider extends ServiceProvider
                 return redirect()->route('tickets.install.index');
             });
         }
+
     }
 
     /**
@@ -265,6 +266,7 @@ class TicketitServiceProvider extends ServiceProvider
         $this->app->singleton('command.kordy.ticketit.htmlify', function ($app) {
             return new Htmlify();
         });
+
         $this->commands('command.kordy.ticketit.htmlify');
     }
 }
