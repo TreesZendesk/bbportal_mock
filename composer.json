@@ -4,9 +4,16 @@
     "keywords": ["ticketit","laravel","helpdesk","ticket","support"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./packages/kordy/ticketit"
+        }
+    ],
     "require": {
         "php": ">=7.0.0",
         "doctrine/dbal": "^2.5",
+        "kordy/ticketit": "dev-master",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "^6.3",
         "illuminate/support": "^5.1",
@@ -31,8 +38,7 @@
             "database/factories"
         ],
         "psr-4": {
-            "App\\": "app/",
-            "Kordy\\Ticketit\\": "packages/kordy/ticketit/src"
+            "App\\": "app/"
         }
     },
     "autoload-dev": {
@@ -59,6 +65,7 @@
         ]
     },
     "config": {
+        "http": true,
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
